@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Semi-total Domination in Unit Disk Graphs}
+
+
+\textbf{Authors:} Sasmita Rout, Gautam Kumar Das
+
+\textbf{Published in:} CALDAM 2024 (LNCS 14508)
+
+\textbf{DOI:} \href{https://doi.org/10.1007/978-3-031-52213-0_9}{10.1007/978-3-031-52213-0\_9}
+
+\vspace{1em}
+
+\section*{1. Problem Studied}
+\begin{itemize}[leftmargin=1.5em]
+    \item The paper studies the \textbf{Semi-total Dominating Set (STDS)} problem in Unit Disk Graphs (UDGs).
+    \item A set \( D_{t2} \subseteq V \) is a STDS if:
+    \begin{enumerate}
+        \item \( D_{t2} \) is a dominating set.
+        \item For every \( u \in D_{t2} \), there exists \( v \in D_{t2} \) such that \( \text{dist}(u,v) \leq 2 \).
+    \end{enumerate}
+\end{itemize}
+
+\section*{2. Motivation and Applications}
+\begin{itemize}[leftmargin=1.5em]
+    \item STDS is a natural variant lying between classical dominating sets and total dominating sets.
+    \item Relevant in wireless networks and sensor placements where both coverage and minimal connectivity are required.
+\end{itemize}
+
+\section*{3. Main Contributions}
+\begin{itemize}[leftmargin=1.5em]
+    \item Proved that the STDS problem is \textbf{NP-complete} in UDGs via a reduction from Vertex Cover on planar graphs.
+    \item Proposed a \textbf{6-factor approximation algorithm} for STDS in UDGs.
+    \item Introduced a \textbf{2 + ln(D+1)} approximation for general graphs, improving over the previous bound of \textbf{2 + 3ln(D+1)}.
+    \item Showed that a PTAS for STDS in UDGs exists with an approximation factor of \( 2 + \varepsilon \).
+\end{itemize}
+
+\section*{4. Techniques Used}
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{NP-Completeness:} Used grid embedding and geometric gadget constructions to simulate vertex cover behavior.
+    \item \textbf{Approximation Algorithm:}
+    \begin{enumerate}
+        \item Compute a maximal independent set \( D \).
+        \item For each vertex in \( D \) lacking a neighbor within distance 2 in \( D \), add a neighbor from \( N(u) \) to set \( T \).
+        \item Return \( D \cup T \) as the semi-total dominating set.
+    \end{enumerate}
+\end{itemize}
+
+\section*{5. Results Summary}
+
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Graph Type} & \textbf{Approach} & \textbf{Approx. Factor} & \textbf{Time Complexity} \\
+\hline
+UDG & Greedy + Local Fix & 6 & \( O(nk) \) \\
+UDG (PTAS) & Local Search + Packing & \( 2 + \varepsilon \) & \( n^{O(1/\varepsilon \log \varepsilon)} \) \\
+General Graph & Set Cover-Based & \( 2 + \ln(D + 1) \) & --- \\
+\hline
+\end{tabular}
+
+\vspace{1em}
+
+\section*{6. Comparison with Prior Work}
+\begin{itemize}[leftmargin=1.5em]
+    \item Improves over the \( 2 + 3 \ln(D+1) \) result from Henning and Pandey (2019).
+    \item The first work to give a dedicated algorithm and complexity result for STDS in UDGs.
+    \item Relates to: \( \gamma(G) \leq \gamma_{t2}(G) \leq \gamma_t(G) \).
+\end{itemize}
+
+\section*{7. Limitations / Assumptions}
+\begin{itemize}[leftmargin=1.5em]
+    \item Assumes no isolated vertices.
+    \item Requires geometric embedding (disk centers must be known).
+    \item Maximal independent set construction may not be efficient for very large or distributed settings.
+\end{itemize}
+
+\section*{8. Observations and Future Ideas}
+\begin{itemize}[leftmargin=1.5em]
+    \item Potential to explore distributed or dynamic versions of the 6-approximation algorithm.
+    \item LP relaxation and rounding might yield tighter bounds.
+    \item STDS in other geometric graphs or higher dimensions could be investigated.
+\end{itemize}
+
+\end{document}
