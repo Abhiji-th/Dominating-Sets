@@ -1,0 +1,6 @@
+\section*{8. Observations and Future Ideas}
+\begin{itemize}[leftmargin=1.5em]
+    \item Potential to explore distributed or dynamic versions of the 6-approximation algorithm.
+    \item LP relaxation and rounding might yield tighter bounds.
+    \item STDS in other geometric graphs or higher dimensions could be investigated.
+\end{itemize}
