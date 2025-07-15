@@ -92,4 +92,171 @@ General Graph & Set Cover-Based & \( 2 + \ln(D + 1) \) & --- \\
     \item STDS in other geometric graphs or higher dimensions could be investigated.
 \end{itemize}
 
+\section*{(Independent) Roman Domination Parameterized by Distance to Cluster}
+
+\textbf{Authors:} Pradeesha Ashok, Gautam K. Das, Arti Pandey, Kaustav Paul, Subhabrata Paul
+
+\textbf{Published in:} COCOA 2024 (LNCS 15435)
+
+\textbf{DOI:} \href{https://doi.org/10.1007/978-981-96-4448-3_13}{10.1007/978-981-96-4448-3\_13}
+
+\vspace{1em}
+
+\section*{1. Problem Studied}
+\begin{itemize}[leftmargin=1.5em]
+    \item The paper studies the Roman Domination and Independent Roman Domination problems.
+    \item A Roman Dominating Function (RDF) is a function \( f : V \rightarrow \{0,1,2\} \), such that every vertex \( v \) with \( f(v) = 0 \) has a neighbor \( u \) with \( f(u) = 2 \).
+    \item An Independent RDF (IRDF) further requires that the set of vertices assigned 1 or 2 form an independent set.
+    \item The study focuses on structural parameterization: specifically, the parameter is the size \( k \) of a minimum set of vertices whose removal results in a cluster graph (a disjoint union of cliques).
+\end{itemize}
+
+\section*{2. Motivation and Applications}
+\begin{itemize}[leftmargin=1.5em]
+    \item Roman Domination arises from defense strategies inspired by the Roman Empire.
+    \item It models efficient resource placement (e.g., network monitoring, facility location) under constraints.
+    \item Independent RDF ensures that no two deployed resources are adjacent — useful in scenarios requiring non-interference.
+\end{itemize}
+
+\section*{3. Main Contributions}
+\begin{itemize}[leftmargin=1.5em]
+    \item Proved that both the Roman Domination (RD-CVD) and Independent Roman Domination (IRD-CVD) problems are \textbf{FPT} when parameterized by distance to cluster.
+    \item Gave algorithms with time complexity \( 4^k n^{\mathcal{O}(1)} \) for both problems.
+    \item Proved matching \textbf{lower bounds} under the SETH assumption: the problems cannot be solved in \( 2^{\varepsilon k} n^{\mathcal{O}(1)} \) for any \( \varepsilon < 1 \), unless SETH fails.
+    \item Proved that both problems do not admit a \textbf{polynomial kernel} unless $NP \subseteq coNP/poly$.
+\end{itemize}
+
+\section*{4. Techniques Used}
+\begin{itemize}[leftmargin=1.5em]
+    \item Used \textbf{structured branching} on cluster vertex deletion sets.
+    \item Reduced the problem to a variant of \textbf{Set Cover with partition constraints}.
+    \item Designed a dynamic programming algorithm with state space bounded by \( 2^{|S|} \cdot n^{\mathcal{O}(1)} \), where \( S \) is the cluster deletion set.
+    \item Used reductions from the \textbf{d-Hitting Set} problem to prove lower bounds and kernelization hardness.
+\end{itemize}
+
+\section*{5. Results Summary}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Problem} & \textbf{Parameter} & \textbf{Complexity} & \textbf{Remarks} \\
+\hline
+RD-CVD & Cluster Deletion Size \( k \) & \( 4^k n^{\mathcal{O}(1)} \) & FPT algorithm \\
+IRD-CVD & Cluster Deletion Size \( k \) & \( 4^k n^{\mathcal{O}(1)} \) & FPT algorithm \\
+RD-CVD / IRD-CVD & Cluster Deletion Size \( k \) & No \( 2^{\varepsilon k} n^{\mathcal{O}(1)} \) algo & Unless SETH fails \\
+RD-CVD / IRD-CVD & Cluster Deletion Size \( k \) & No Poly Kernel & Unless $NP \subseteq coNP/poly$ \\
+\hline
+\end{tabular}
+
+\section*{6. Comparison with Prior Work}
+\begin{itemize}[leftmargin=1.5em]
+    \item Extends the line of work on domination problems in parameterized complexity.
+    \item Builds upon earlier results on classical Roman Domination and parameterization by treewidth and solution size.
+    \item One of the first works to explore Independent Roman Domination with structural parameters.
+\end{itemize}
+
+\section*{7. Limitations and Assumptions}
+\begin{itemize}[leftmargin=1.5em]
+    \item The cluster vertex deletion set is assumed as part of the input.
+    \item Results focus on deletion to cluster graphs; extension to other structural parameters like treewidth, neighborhood diversity is open.
+    \item Real-world graphs may not always exhibit small cluster distance.
+\end{itemize}
+
+\section*{8. Observations and Future Directions}
+\begin{itemize}[leftmargin=1.5em]
+    \item Strongly bridges parameterized complexity and classical domination theory.
+    \item Open directions:
+    \begin{itemize}
+        \item Improve the time complexity (e.g., reduce base from 4).
+        \item Explore FPT status with parameters like modular-width, twin-cover.
+        \item Investigate kernelization under alternative parameters.
+    \end{itemize}
+\end{itemize}
+
+\section*{Total Roman Domination and Total Domination in Unit Disk Graphs}
+
+\textbf{Authors:} Sasmita Rout, Pawan Kumar Mishra, Gautam Kumar Das
+
+\textbf{Published in:} Communications in Combinatorics and Optimization, Vol. 10, No. 4 (2025), pp. 803–823
+
+\textbf{DOI:} \href{https://doi.org/10.22049/cco.2024.28647.1650}{10.22049/cco.2024.28647.1650}
+
+\vspace{1em}
+
+\section*{1. Problem Studied}
+\begin{itemize}[leftmargin=1.5em]
+    \item The paper focuses on two problems in Unit Disk Graphs (UDGs):
+    \begin{enumerate}
+        \item The \textbf{Total Roman Dominating Set (TRDS)} problem.
+        \item The \textbf{Total Dominating Set (TDS)} problem.
+    \end{enumerate}
+    \item A \textbf{Total Roman Dominating Function (TRDF)} is a Roman dominating function where the subgraph induced by non-zero valued vertices has no isolated vertex.
+    \item The objective is to find a TRDF of minimum weight (sum of vertex values).
+\end{itemize}
+
+\section*{2. Motivation}
+\begin{itemize}[leftmargin=1.5em]
+    \item These problems have direct applications in wireless sensor and ad-hoc networks.
+    \item Ensures both domination and resilience (total property), mimicking fault tolerance and mutual communication.
+    \item UDGs model proximity-based communication (e.g., sensors with fixed radius).
+\end{itemize}
+
+\section*{3. Main Contributions}
+\begin{itemize}[leftmargin=1.5em]
+    \item Proposed a \textbf{10.5-approximation algorithm} for TRDS in UDGs with time complexity \( \mathcal{O}(|V| \log k) \), where \( k \) is the number of vertices assigned Roman value 2.
+    \item Improved approximation factor over previous best-known 12-approximation.
+    \item Proposed a new \textbf{7.79-approximation algorithm} for the TDS problem in UDGs, improving over the previous 8-factor approximation.
+    \item TDS algorithm runs in \( \mathcal{O}(|V| + |E|) \) time.
+\end{itemize}
+
+\section*{4. Techniques Used}
+\begin{itemize}[leftmargin=1.5em]
+    \item For TRDS:
+    \begin{itemize}
+        \item Construct maximal independent set \( V_2 \) (assigned value 2).
+        \item Add neighboring vertices \( V_1 \) (assigned value 1) to ensure no isolated vertices in \( V_1 \cup V_2 \).
+    \end{itemize}
+    \item For TDS:
+    \begin{itemize}
+        \item BFS to layer graph into sets \( S_i \), construct independent sets \( I_i \), and parent sets \( T_i \) for total property.
+    \end{itemize}
+\end{itemize}
+
+\section*{5. Results Summary}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Problem} & \textbf{Approx. Factor} & \textbf{Time Complexity} & \textbf{Improvement} \\
+\hline
+TRDS in UDGs & 10.5 & \( \mathcal{O}(|V| \log k) \) & Improves previous 12-factor \\
+TDS in UDGs & 7.79 & \( \mathcal{O}(|V| + |E|) \) & Improves previous 8-factor \\
+\hline
+\end{tabular}
+
+\vspace{1em}
+
+\section*{6. Comparison with Prior Work}
+\begin{itemize}[leftmargin=1.5em]
+    \item Builds on prior work by Shang et al. (RDS in UDGs) and Jena \& Das (TDS in UDGs).
+    \item Avoids distributed algorithm overhead from previous CRDS approximations.
+    \item Provides improved constants for both TRDS and TDS.
+\end{itemize}
+
+\section*{7. Assumptions and Limitations}
+\begin{itemize}[leftmargin=1.5em]
+    \item Requires UDG embedding (disk centers in \( \mathbb{R}^2 \) known).
+    \item Performance guarantees are worst-case; empirical performance not evaluated.
+    \item TRDS approximation relies on geometric packing bounds (disk overlaps).
+\end{itemize}
+
+\section*{8. Observations and Future Work}
+\begin{itemize}[leftmargin=1.5em]
+    \item Provides structural lemmas and tight bounds on packing independent disks.
+    \item Opens avenues for:
+    \begin{itemize}
+        \item Distributed versions of the algorithms.
+        \item Extending to dynamic or weighted UDGs.
+        \item Empirical evaluation on real-world networks.
+    \end{itemize}
+\end{itemize}
+
+\end{document}
+
+
 \end{document}
