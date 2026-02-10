@@ -1,0 +1,50 @@
+# plot_drdf_feasible.py
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+import numpy as np
+
+# Coordinates (unit distances)
+u = (0.0, 0.0)                      # central V2 supply
+# demand points inside unit disk (radius 0.7)
+x = [(0.7,0.0),(0.0,0.7),(-0.7,0.0),(0.0,-0.7)]
+# second supplies (distinct, within distance 0.7 of demands)
+w = [(1.4,0.0),(0.0,1.4),(-1.4,0.0),(0.0,-1.4)]
+
+fig, ax = plt.subplots(figsize=(5,5))
+ax.set_aspect('equal')
+ax.set_xlim(-2.5,2.5)
+ax.set_ylim(-2.5,2.5)
+
+# draw central unit disk
+ax.add_patch(Circle(u, 1.0, edgecolor='blue', facecolor='none', lw=1.2, ls='--', alpha=0.8, zorder=1))
+
+# draw demands
+for xi in x:
+    ax.add_patch(Circle(xi, 0.04, facecolor='green', edgecolor='black', zorder=4))
+    ax.text(xi[0]+0.05, xi[1]+0.05, f"$x_{{{x.index(xi)+1}}}$", fontsize=10)
+
+# draw second supplies
+for wi in w:
+    ax.add_patch(Circle(wi, 0.04, facecolor='red', edgecolor='black', zorder=4))
+    ax.text(wi[0]+0.05, wi[1]+0.05, f"$w_{{{w.index(wi)+1}}}$", fontsize=10)
+
+# draw connections u -> x and x -> w
+for xi in x:
+    ax.plot([u[0], xi[0]], [u[1], xi[1]], color='gray', lw=0.9, zorder=2)
+for xi, wi in zip(x, w):
+    ax.plot([xi[0], wi[0]], [xi[1], wi[1]], color='gray', lw=0.9, zorder=2)
+
+# draw second-supply unit disks with alpha to show lens intersections
+for wi in w:
+    c = Circle(wi, 1.0, facecolor='orange', edgecolor='none', alpha=0.12, zorder=0)
+    ax.add_patch(c)
+# legend-ish labels
+ax.plot([], [], 'o', color='blue', label=r'$u\in V_2$')
+ax.plot([], [], 'o', color='green', label=r'$V_0(2)$')
+ax.plot([], [], 'o', color='red', label=r'$w_i$ (second suppliers)')
+ax.legend(loc='upper right', fontsize=9)
+
+ax.set_title('Feasible: 4 two-demand vertices served by a single V_2')
+plt.tight_layout()
+plt.savefig('feasible_4.png', dpi=300)
+plt.show()

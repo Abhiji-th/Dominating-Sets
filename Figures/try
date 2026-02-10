@@ -1,0 +1,111 @@
+# search_c2.py -- try to find 5 two-demand points served by one supply u=(0,0)
+import math
+import itertools
+import numpy as np
+from math import hypot
+from scipy.optimize import minimize
+
+# distance helpers
+def dist(a,b): return math.hypot(a[0]-b[0], a[1]-b[1])
+
+# check constraints for given x_list and w_list
+def feasible_config(u, xs, ws, eps=1e-6):
+    # each x in unit disk around u
+    for x in xs:
+        if dist(x,u) > 1+1e-9: return False
+    # each x must have its matched w within 1 and w != u
+    for x,w in zip(xs,ws):
+        if dist(x,w) > 1+1e-9: return False
+        if dist(w,u) < 1e-6: return False
+    # distinct w's
+    for i,j in itertools.combinations(range(len(ws)),2):
+        if dist(ws[i], ws[j]) < 1e-6: return False
+    return True
+
+# given xs (5 demands), try to find distinct ws satisfying |x-w|<=1 and w!=u
+def find_ws_for_xs(u, xs, tries=20):
+    n = len(xs)
+    # initial guess: place each w radially outward from its x
+    inits = []
+    for x in xs:
+        vx = np.array(x)
+        norm = np.linalg.norm(vx)
+        if norm < 1e-6:
+            inits.append(np.array([1.0,0.0]))
+        else:
+            dir = vx / norm
+            inits.append(vx + 0.8*dir)  # outward
+    x0 = np.hstack(inits)
+    # optimization: minimize sum(max(0, |x_i-w_i|-1)^2) + penalty for w_i near 0 and for w_i collisions
+    def obj(z):
+        z = z.reshape((n,2))
+        val = 0.0
+        for i in range(n):
+            ri = max(0.0, math.hypot(*(z[i]-xs[i])) - 1.0)
+            val += ri*ri*1000.0
+            # penalty for being too close to u
+            val += 1000.0 * max(0.0, 1e-3 - math.hypot(z[i][0], z[i][1]))**2
+        # distinctness penalty
+        for i,j in itertools.combinations(range(n),2):
+            d = math.hypot(*(z[i]-z[j]))
+            if d < 1e-2:
+                val += 10000.0*(1e-2 - d)**2
+        return val
+
+    best=None
+    for attempt in range(tries):
+        # small random perturbation
+        z0 = x0 + 0.2*np.random.randn(*x0.shape)
+        res = minimize(obj, z0, method='L-BFGS-B', options={'maxiter':500})
+        if best is None or res.fun < best.fun:
+            best=res
+        if res.fun < 1e-6:
+            break
+    if best is None: return None
+    z = best.x.reshape((n,2))
+    ws = [tuple(z[i]) for i in range(n)]
+    if feasible_config(u, xs, ws):
+        return ws
+    return None
+
+# coarse grid candidates for xs inside unit disk
+def grid_points(res=0.25):
+    pts=[]
+    r=1.0
+    rng = np.arange(-r, r+1e-9, res)
+    for x in rng:
+        for y in rng:
+            if x*x+y*y <= r*r + 1e-9:
+                pts.append((float(x),float(y)))
+    return pts
+
+def main():
+    u = (0.0,0.0)
+    pts = grid_points(0.35)  # coarse grid ~ many points but manageable
+    print("candidate points:", len(pts))
+    # search combinations of 5 (prune by angular spacing)
+    # we choose only subsets with reasonable angular spread to focus search
+    # precompute polar angles
+    pol = [(math.atan2(y,x), (x,y)) for (x,y) in pts]
+    pol_sorted = sorted(pol, key=lambda t: t[0])
+    coords = [t[1] for t in pol_sorted]
+    angles = [t[0] for t in pol_sorted]
+    N = len(coords)
+    checked = 0
+    for comb in itertools.combinations(range(N),5):
+        xs = [coords[i] for i in comb]
+        # quick check: max distance from center <=1 ensured; ensure they are not too clustered radially invalid
+        # try to find ws
+        ws = find_ws_for_xs(u, xs, tries=8)
+        checked += 1
+        if ws is not None:
+            print("Found feasible configuration!")
+            print("xs:", xs)
+            print("ws:", ws)
+            return
+        if checked % 5000 == 0:
+            print("checked", checked)
+    print("No feasible configuration found on coarse grid search.")
+
+if __name__ == "__main__":
+    main()
